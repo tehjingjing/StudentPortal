@@ -13,7 +13,7 @@ function sendResetEmail(string $recipientEmail, string $recipientName, string $r
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-\
+        
         $senderEmail = "tehjingjing2006@gmail.com";
         $mail->Username = $senderEmail;
         $mail->Password = "lzyc kgof mzzw uvra";
