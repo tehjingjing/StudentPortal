@@ -5,30 +5,29 @@ if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
     exit('Access Denied');
 }
 
-// Production Render MySQL config (read env variables)
-if (getenv('RENDER') === 'true') {
-    $host = getenv('DB_HOST');
-    $user = getenv('DB_USER');
-    $pass = getenv('DB_PASS');
-    $db = getenv('DB_NAME');
-    $port = 3306;
-} else {
-    // Docker/local development configuration (MySQL)
-    $host = 'db';
-    $db = 'studentportal';
-    $user = 'appuser';
-    $pass = 'apppass';
-    $port = 3306;
-}
+// Data configuration variables
+$host = 'db';             // Matches the Docker service name 'db'
+$db   = 'studentportal';  // Matches your docker-compose MYSQL_DATABASE
+$user = 'appuser';        // Matches your docker-compose MYSQL_USER
+$pass = 'apppass';        // Matches your docker-compose MYSQL_PASSWORD
+$port = 3306;             // Internal Docker port for MySQL
 
-// Uniform MySQL mysqli connection for all environment
+// mysqli is the built-in PHP extension for talking to MySQL.
+// This line dials the phone and connects.
 $conn = new mysqli($host, $user, $pass, $db, $port);
 
+// Always check the call connected. If not, stop everything and show why.
+// (In a real app you'd log this, not print it -- but for learning, show it.)
+// Check for database connection failure immediately after initialization
+// Terminate script and output error message if connection cannot be created
+// Production applications should log errors instead of printing them directly for security
 if ($conn->connect_error) {
-    // Log exact error to Render backend logs
-    error_log('DB Connect Error: ' . $conn->connect_error . ' | Host:' . $host);
+    error_log('Database connection failed: ' . $conn->connect_error);
     die("A secure database connectivity error occurred. Please contact the portal administrator.");
 }
 
+// Set database character set to utf8mb4
+// Make sure text with emojis / accents is stored correctly.
+// Set database character set to utf8mb4
 $conn->set_charset('utf8mb4');
 ?>
