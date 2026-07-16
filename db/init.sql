@@ -81,6 +81,8 @@ CREATE TABLE `users` (
     `student_id`    INT NULL,
     `admin_id`      INT NULL,
     `created_at`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `reset_token`   VARCHAR(255) NULL,
+    `reset_expiry`  DATETIME NULL,
     FOREIGN KEY (`student_id`) REFERENCES `student`(`student_id`) ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (`admin_id`) REFERENCES `admin`(`admin_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -155,9 +157,6 @@ INSERT INTO `course` (`program_id`, `course_name`, `course_code`, `credit_hours`
 (1, 'Introduction to Computer Science', 'CS101', 3, '14 Weeks', 'active'),
 (1, 'IT Essentials', 'BIT101', 4, '14 Weeks', 'active'),
 (2, 'Human Resource', 'BBA102', 3, '14 Weeks', 'active');
-
-INSERT INTO `enrolment` (`student_id`, `course_id`, `program_id`, `semester`, `academic_year`, `status`) VALUES
-(1, 1, 1, 1, 2026, 'registered');
 
 INSERT INTO `leave` (`student_id`, `start_date`, `end_date`, `reason`, `status`, `approved_by`) VALUES
 (1, '2026-04-01', '2026-04-03', 'Family trip', 'approved', 1);
