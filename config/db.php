@@ -5,27 +5,13 @@ if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
     exit('Access Denied');
 }
 
-// Check if running on Render (production) or Docker (local development)
-if (getenv('RENDER') === 'true' && getenv('DATABASE_URL')) {
-    // Render deployment - use PostgreSQL
-    $dbUrl = getenv('DATABASE_URL');
-    $urlParts = parse_url($dbUrl);
-
-    $host = $urlParts['host'];
-    $port = $urlParts['port'] ?? 5432;
-    $user = $urlParts['user'];
-    $pass = $urlParts['pass'];
-    $db = ltrim($urlParts['path'], '/');
-
-    // Use PDO for PostgreSQL
-    try {
-        $pdo = new PDO("pgsql:host=$host;port=$port;dbname=$db", $user, $pass);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $conn = $pdo;
-    } catch (PDOException $e) {
-        error_log('Database connection failed: ' . $e->getMessage());
-        die("A secure database connectivity error occurred. Please contact the portal administrator.");
-    }
+// Production Render MySQL config (read env variables)
+if (getenv('RENDER') === 'true') {
+    $host = getenv('DB_HOST');
+    $user = getenv('DB_USER');
+    $pass = getenv('DB_PASS');
+    $db = getenv('DB_NAME');
+    $port = 3306;
 } else {
     // Docker/local development configuration (MySQL)
     $host = 'db';
@@ -33,14 +19,16 @@ if (getenv('RENDER') === 'true' && getenv('DATABASE_URL')) {
     $user = 'appuser';
     $pass = 'apppass';
     $port = 3306;
-
-    $conn = new mysqli($host, $user, $pass, $db, $port);
-
-    if ($conn->connect_error) {
-        error_log('Database connection failed: ' . $conn->connect_error);
-        die("A secure database connectivity error occurred. Please contact the portal administrator.");
-    }
-
-    $conn->set_charset('utf8mb4');
 }
+
+// Uniform MySQL mysqli connection for all environment
+$conn = new mysqli($host, $user, $pass, $db, $port);
+
+if ($conn->connect_error) {
+    // Log exact error to Render backend logs
+    error_log('DB Connect Error: ' . $conn->connect_error . ' | Host:' . $host);
+    die("A secure database connectivity error occurred. Please contact the portal administrator.");
+}
+
+$conn->set_charset('utf8mb4');
 ?>
