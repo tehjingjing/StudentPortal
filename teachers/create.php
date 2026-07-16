@@ -1,5 +1,3 @@
-create.php (Fixed Email Duplicate Error | Complete Working Code)
-修复说明：新增教师邮箱唯一性校验，拦截数据库重复报错，自定义友好错误提示，保留原有CSRF验证、管理员权限、表单验证、页面样式全部功能。
 <?php
 // register new teacher (admin only)
 session_start();
@@ -35,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = 'Please enter a valid email address.';
         } else {
-            // ========== 新增：邮箱重复校验（彻底解决Duplicate entry报错） ==========
             $checkEmailStmt = $conn->prepare("SELECT teacher_id FROM teacher WHERE email = ?");
             $checkEmailStmt->bind_param("s", $email);
             $checkEmailStmt->execute();
