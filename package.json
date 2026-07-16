@@ -1,0 +1,18 @@
+{
+  "name": "studentportal",
+  "version": "1.0.0",
+  "description": "Student Portal is a PHP and MySQL web application for managing student records, teachers, programmes, courses, enrolment, and leave applications. It has separate administrator and student dashboards with role-based access.",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test tests/student_portal.spec.js --project=chromium",
+    "test:all": "playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^26.1.1"
+  }
+}

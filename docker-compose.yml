@@ -1,0 +1,40 @@
+# docker-compose.yml
+services:
+  web:
+    image: php:8.2-apache
+    container_name: studentportal-web
+    ports:
+      - "8080:80"            # visit http://localhost:8080 in your browser
+    volumes:
+      - .:/var/www/html      # Maps the entire project folder
+    depends_on:
+      - db
+    command: >
+      bash -c "docker-php-ext-install mysqli && apache2-foreground"
+
+  db:
+    image: mysql:8.0
+    container_name: studentportal-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: studentportal      
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppass
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql              
+      - ./db:/docker-entrypoint-initdb.d    
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: studentportal-pma
+    ports:
+      - "8081:80"            # visit http://localhost:8081 to browse the database
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+
+volumes:
+  db_data:
