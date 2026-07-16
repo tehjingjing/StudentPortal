@@ -1,3 +1,5 @@
+create.php (Fixed Email Duplicate Error | Complete Working Code)
+修复说明：新增教师邮箱唯一性校验，拦截数据库重复报错，自定义友好错误提示，保留原有CSRF验证、管理员权限、表单验证、页面样式全部功能。
 <?php
 // register new teacher (admin only)
 session_start();
@@ -33,32 +35,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error = 'Please enter a valid email address.';
         } else {
-            // Restrict status to only allowed values
-            if (!in_array($status, ['active', 'resigned'], true)) {
-                $status = 'active';
-            }
+            // ========== 新增：邮箱重复校验（彻底解决Duplicate entry报错） ==========
+            $checkEmailStmt = $conn->prepare("SELECT teacher_id FROM teacher WHERE email = ?");
+            $checkEmailStmt->bind_param("s", $email);
+            $checkEmailStmt->execute();
+            $checkEmailResult = $checkEmailStmt->get_result();
 
-            // Handle empty faculty selection as NULL
-            $faculty_id = trim($_POST['faculty_id'] ?? '');
-            $faculty_id = $faculty_id === '' ? null : (int)$faculty_id;
-
-            // Prepared SQL insert for new teacher record
-            $stmt = $conn->prepare(
-                'INSERT INTO teacher (teacher_name, email, phone, faculty_id, joining_date, status) 
-                 VALUES (?, ?, ?, ?, ?, ?)'
-            );
-            // Bind data types: string, string, string, integer|null, string, string
-            $stmt->bind_param('sssiss', $teacher_name, $email, $phone, $faculty_id, $joining_date, $status);
-
-            if ($stmt->execute()) {
-                $_SESSION['success_msg'] = 'New teacher registered successfully.';
-                header('Location: index.php');
-                exit();
+            if ($checkEmailResult->num_rows > 0) {
+                $error = 'Error: This teacher email address is already registered! Please use another email.';
+                $checkEmailStmt->close();
             } else {
-                $error = 'Failed to save teacher data to database.';
-                error_log('Teacher insert failed: ' . $stmt->error);
+                // Restrict status to only allowed values
+                if (!in_array($status, ['active', 'resigned'], true)) {
+                    $status = 'active';
+                }
+
+                // Handle empty faculty selection as NULL
+                $faculty_id = trim($_POST['faculty_id'] ?? '');
+                $faculty_id = $faculty_id === '' ? null : (int)$faculty_id;
+
+                // Prepared SQL insert for new teacher record
+                $stmt = $conn->prepare(
+                    'INSERT INTO teacher (teacher_name, email, phone, faculty_id, joining_date, status) 
+                     VALUES (?, ?, ?, ?, ?, ?)'
+                );
+                // Bind data types: string, string, string, integer|null, string, string
+                $stmt->bind_param('sssiss', $teacher_name, $email, $phone, $faculty_id, $joining_date, $status);
+
+                if ($stmt->execute()) {
+                    $_SESSION['success_msg'] = 'New teacher registered successfully.';
+                    header('Location: index.php');
+                    exit();
+                } else {
+                    $error = 'Failed to save teacher data to database.';
+                    error_log('Teacher insert failed: ' . $stmt->error);
+                }
+                $stmt->close();
             }
-            $stmt->close();
         }
     }
 }
