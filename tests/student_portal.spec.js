@@ -331,7 +331,7 @@ test.describe('Student Management Portal E2E Tests', () => {
       await expect(card).toBeVisible();
       page.once('dialog', dialog => dialog.accept());
       await card.locator('button.btn-danger').click();
-      await expect(page.locator('.alert-success')).toBeVisible();
+      await expect(page.locator('.alert.alert-success')).toBeVisible();
     });
   });
 
