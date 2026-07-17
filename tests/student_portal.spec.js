@@ -448,7 +448,7 @@ test.describe('Student Management Portal E2E Tests', () => {
 
       await expect(leaveRow).toBeVisible();
       await leaveRow.locator('button.btn-approve').click();
-      await expect(page.locator('.alert-success')).toBeVisible();
+      await expect(page.locator('.alert.alert-success')).toBeVisible();
       await expect(leaveRow.locator('.status-pill')).toContainText('Approved');
     });
   });
