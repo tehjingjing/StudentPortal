@@ -169,4 +169,3 @@ StudentPortal/
 - The database host in `config/db.php` is `db`, which is the Docker Compose
   service name. It will not work when opening PHP files directly without Docker.
 - Uploaded leave evidence is stored locally in `uploads/leavedoc/`.
-- For Render deployment, file uploads require persistent storage configuration.
