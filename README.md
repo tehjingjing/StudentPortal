@@ -33,11 +33,18 @@ No local PHP or MySQL installation is required.
 
 ## Setup and run
 
-1. Clone the GitHub repository and open the project folder.
+1. Clone the GitHub repository and open the project folder// Download a zip file
 
    ```bash
    git clone <your-repository-url>
    cd StudentPortal
+   ```
+   
+   ```bash
+   1. Go to the main page of the repository on GitHub.
+   2. Click the green Code button located at the top right of the file list.
+   3. Select Download ZIP from the dropdown menu.
+   4. Locate the downloaded file on your computer and extract (unzip) it to access the code.
    ```
 
 2. Start the application containers.
