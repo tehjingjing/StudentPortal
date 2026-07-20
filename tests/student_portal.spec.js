@@ -331,7 +331,7 @@ test.describe('Student Management Portal E2E Tests', () => {
       await expect(card).toBeVisible();
       page.once('dialog', dialog => dialog.accept());
       await card.locator('button.btn-danger').click();
-      await expect(page.locator('.alert.alert-success')).toBeVisible();
+      await expect(page.locator('.alert-success')).toBeVisible();
     });
   });
 
@@ -459,7 +459,7 @@ test.describe('Student Management Portal E2E Tests', () => {
   test.describe('Security Validation', () => {
     test('CSRF protection blocks delete request without token', async ({ page }) => {
       await loginAsAdmin(page);
-      await page.goto(`${BASE_URL}/students/delete_student.php?id=1`);
+      await page.goto(`${BASE_URL}/students/delete.php?id=1`);
       await expect(page).toHaveURL(/index.php/);
     });
 
