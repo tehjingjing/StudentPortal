@@ -531,7 +531,7 @@ test.describe('Password Reset', () => {
     await expect(page).toHaveURL(/reset_password\.php/);
   });
 
-  // New test: Password shorter than 6 characters
+  // Password shorter than 6 characters
   test('backend keeps user on reset page if password length below 6 characters', async ({ page }) => {
     await page.goto(`${BASE_URL}/auth/reset_password.php?token=dummy-token-123`);
     await disableFormValidate(page);
@@ -543,7 +543,7 @@ test.describe('Password Reset', () => {
     await expect(page).toHaveURL(/reset_password\.php/);
   });
 
-  // New test: Mismatched new password and confirm password
+  // Mismatched new password and confirm password
   test('backend keeps user on reset page if password and confirm password do not match', async ({ page }) => {
     await page.goto(`${BASE_URL}/auth/reset_password.php?token=dummy-token-123`);
     await disableFormValidate(page);
@@ -555,7 +555,7 @@ test.describe('Password Reset', () => {
     await expect(page).toHaveURL(/reset_password\.php/);
   });
 
-  // New test: Submit empty password fields (fix previous navigation timeout error)
+  // Submit empty password fields (fix previous navigation timeout error)
   test('backend keeps user on reset page when submitting blank password inputs', async ({ page }) => {
     await page.goto(`${BASE_URL}/auth/reset_password.php?token=dummy-token-123`);
     await disableFormValidate(page);
