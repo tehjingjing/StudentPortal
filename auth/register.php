@@ -1,5 +1,4 @@
 <?php
-// Start PHP session to store CSRF token & track authenticated login state
 session_start();
 
 // CSRF Protection: Generate unique security token once per user session to block cross-site request forgery attacks
@@ -8,7 +7,6 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Set timezone to Malaysia to match database datetime timestamps
 date_default_timezone_set('Asia/Kuala_Lumpur');
 
 // Import MySQL database connection configuration
@@ -21,7 +19,6 @@ if (!empty($_SESSION['role'])) {
     exit();
 }
 
-// Variable to store all user-facing error messages for form display
 $error = '';
 
 // Handle form POST submission when user clicks "Create Account" button
@@ -56,9 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Step 1: Check if student record exists in `student` table
             // System rule: Admin must first create student profile before student can self-register login
             $studentStmt = $conn->prepare('SELECT student_id FROM student WHERE email = ? LIMIT 1');
-            $studentStmt->bind_param('s', $email); // Bind email string parameter
+            $studentStmt->bind_param('s', $email); 
             $studentStmt->execute();
-            $studentStmt->store_result(); // Save query result to count rows without fetching
+            $studentStmt->store_result(); 
 
             // No matching student profile found in student table
             if ($studentStmt->num_rows === 0) {
@@ -100,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Redirect to login page with success message via URL parameter
                         $success_msg = 'Registration successful! You can now log in.';
                         header('Location: login.php?message=' . urlencode($success_msg));
-                        exit(); // Stop script execution after redirect
+                        exit(); 
                     } else {
                         // Log raw database error to server log for admin debugging
                         error_log('Registration failed: ' . $conn->error);
@@ -137,29 +134,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <!-- Hidden CSRF token input to validate form origin on backend -->
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>">
             
-            <!-- Email input field, repopulate submitted value on validation failure -->
             <div class="form-group">
                 <label>Email Address *</label>
                 <input type="email" name="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
             </div>
 
-            <!-- New password input, minimum 6 character client-side validation -->
             <div class="form-group">
                 <label>Password *</label>
                 <input type="password" name="password" minlength="6" required>
             </div>
 
-            <!-- Password confirmation matching input -->
             <div class="form-group">
                 <label>Confirm Password *</label>
                 <input type="password" name="confirm_password" minlength="6" required>
             </div>
 
-            <!-- Form submit button -->
             <button type="submit" class="btn btn-primary">Create Account</button>
         </form>
 
-        <!-- Navigation link for existing registered users -->
         <div class="login-link">
             Already have an account? <a href="login.php">Log In Now</a>
         </div>
