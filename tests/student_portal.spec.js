@@ -9,7 +9,7 @@ const ADMIN_EMAIL = 'admin@portal.com';
 exports.ADMIN_EMAIL = ADMIN_EMAIL;
 const ADMIN_PASSWORD = 'Portal123!';
 exports.ADMIN_PASSWORD = ADMIN_PASSWORD;
-const STUDENT_EMAIL = 'tehjingjing2006@gmail.com';
+const STUDENT_EMAIL = 'alice@school.edu';
 const STUDENT_PASSWORD = 'Portal123!';
 
 // Unique ID generator for test records
@@ -166,9 +166,9 @@ test.describe('Student Management Portal E2E Tests', () => {
 
     test('search function returns matching students', async ({ page }) => {
       await page.goto(`${BASE_URL}/students/index.php`);
-      await page.fill('input[name="search"]', 'tehjingjing2006@gmail.com');
+      await page.fill('input[name="search"]', 'alice@school.edu');
       await page.press('input[name="search"]', 'Enter');
-      await expect(page.locator('.record-card').first()).toContainText('tehjingjing2006@gmail.com');
+      await expect(page.locator('.record-card').first()).toContainText('alice@school.edu');
     });
 
     test('can delete a student with related records', async ({ page }) => {
