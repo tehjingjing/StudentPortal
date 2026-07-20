@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Calculate token expiry time (valid for 1 hour from current time)
             $expireTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-            // FIXED: Save token & expiry into users auth table (match reset_password.php query table)
+            // Save token & expiry into users auth table
             $updateStmt = $conn->prepare("UPDATE users SET reset_token = ?, reset_expiry = ? WHERE email = ?");
             $updateStmt->bind_param("sss", $resetToken, $expireTime, $email);
             $updateStmt->execute();
@@ -84,10 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Responsive viewport meta tag for mobile layout scaling -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
-    <!-- Global stylesheet with cache bust version number -->
     <link rel="stylesheet" href="../public/css/styles.css?v=3">
 </head>
 <body class="form-page">
