@@ -3,7 +3,6 @@ session_start();
 require_once '../config/db.php';
 require_once '../includes/require_login.php';
 
-// Admins only — students who land here get bounced to their own dashboard.
 if ($_SESSION['role'] !== 'admin') {
     header('Location: student_dashboard.php');
     exit();
