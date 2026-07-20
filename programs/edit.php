@@ -104,7 +104,7 @@ $form = array_merge($program, $_POST);
 </head>
 <body class="form-page">
     <div class="form-panel">
-        <h2>Edit Program</h2>
+        <h2>📝 Edit Program</h2>
 
         <?php if ($error): ?>
             <div class="alert alert-error">⚠️ <?= htmlspecialchars($error) ?></div>
