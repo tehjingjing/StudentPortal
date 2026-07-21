@@ -136,8 +136,6 @@ StudentPortal/
 │   ├── apply.php              # Student leave application form
 │   ├── submit_leave.php       # Leave submission handler
 │   └── process_leave.php     # Leave approval/rejection handler
-├── logo/
-│   └── Spacecollege.png       # Application logo
 ├── programs/
 │   ├── index.php              # Program listing with search
 │   ├── create.php             # Add new program form
@@ -146,8 +144,10 @@ StudentPortal/
 ├── public/
 │   ├── css/
 │   │   └── styles.css         # Main stylesheet
-│   └── js/
-│       └── sidebar.js         # Sidebar toggle functionality
+│   ├── js/
+│   │   └── sidebar.js         # Sidebar toggle functionality
+│   └── logo/
+│       └── Spacecollege.png   # Application logo
 ├── students/
 │   ├── index.php              # Student listing with search
 │   ├── create.php             # Add new student form
