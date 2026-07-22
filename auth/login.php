@@ -135,7 +135,7 @@ $remember_email = htmlspecialchars($_COOKIE['remember_email'] ?? '', ENT_QUOTES,
 </head>
 <body class="form-page">
     <div class="login-box">
-        <img src="/logo/Spacecollege.png" alt="Logo" class="college-logo">
+        <img src="/public/logo/Spacecollege.png" alt="Logo" class="college-logo">
         <h1>Welcome Back</h1>
         <p class="subtitle">Log in to your account to continue.</p>
 
