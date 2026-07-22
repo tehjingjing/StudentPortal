@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="form-page">
     <div class="register-box">
-        <img src="/logo/Spacecollege.png" alt="Logo" class="college-logo">
+        <img src="/public/logo/Spacecollege.png" alt="Logo" class="college-logo">
         <h1>Student Registration</h1>
         <p class="subtitle">Register your account to get started.</p>
 
