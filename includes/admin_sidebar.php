@@ -12,7 +12,7 @@ if (!isset($activePage)) {
 <button class="sidebar-backdrop" type="button" aria-label="Close navigation"></button>
 <aside id="portal-sidebar" class="sidebar" aria-label="Administrator navigation">
     <div class="sidebar-brand">
-        <img src="/logo/Spacecollege.png" alt="Logo" class="logo-mark">
+        <img src="/public/logo/Spacecollege.png" alt="Logo" class="logo-mark">
         <div class="brand-name">Student<span>Portal</span></div>
     </div>
 
