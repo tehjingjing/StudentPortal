@@ -2,6 +2,15 @@
 session_start();
 require_once '../config/db.php';
 
+if (!empty($_SESSION['role'])) {
+    if ($_SESSION['role'] === 'student') {
+        header('Location: ../dashboard/student_dashboard.php');
+    } else {
+        header('Location: ../dashboard/admin_dashboard.php');
+    }
+    exit();
+}
+
 $error = '';
 $success = '';
 // Get reset token passed via URL parameter, remove extra spaces
