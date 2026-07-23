@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Save token & expiry into users auth table
             $updateStmt = $conn->prepare("UPDATE users SET reset_token = ?, reset_expiry = ? WHERE email = ?");
-            $updateStmt->bind_param("sss", $resetToken, $expireTime, $email);
+            $updateStmt->bind_param("sss", $token, $expireTime, $email);
             $updateStmt->execute();
             $updateStmt->close();
 
@@ -59,9 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $protocol = $isHttps ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'];
             $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?token=' . $token;
+
+            $recipientName = $student\['full\_name'\] ?? 'Student';
             
-            // HTML email template content containing reset link
-            $html = "
             <h2>Password Reset Request</h2>
             <p>Hi {$recipientName},</p>
             <p>You requested a password reset for your student account.</p>
