@@ -40,14 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$student) {
             $error = "No student account found with this email.";
         } else {
-            // Step 2: Generate cryptographically secure random 32-byte reset token (hex format)
-            $token = bin2hex(random_bytes(32));
+            // Step 2: Generate cryptographically secure random 32-byte reset  (hex format)
+            $reset_token = bin2hex(random_bytes(32));
             // Calculate token expiry time (valid for 1 hour from current time)
             $expireTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
             // Fix: Save token into the same student table
             $updateStmt = $conn->prepare("UPDATE student SET reset_token = ?, reset_expiry = ? WHERE email = ?");
-            $updateStmt->bind_param("sss", $token, $expireTime, $email);
+            $updateStmt->bind_param("sss", $reset_token, $expireTime, $email);
             $updateStmt->execute();
             $updateStmt->close();
 
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $protocol = $isHttps ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'];
-            $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?token=' . $token;
+            $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?reset_token=' . $reset_token;
 
             // Fix: correct array access syntax
             $recipientName = $student['full_name'] ?? 'Student';
