@@ -52,14 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updateStmt->close();
 
             $isHttps = 
-                 (!empty($\_SERVER\['HTTPS'\]) && $\_SERVER\['HTTPS'\] !== 'off')
-                 || 
-                 (isset($\_SERVER\['HTTP\_X\_FORWARDED\_PROTO'\]) && $\_SERVER\['HTTP\_X\_FORWARDED\_PROTO'\] === 'https');
+                (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+                || 
+                (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+
             $protocol = $isHttps ? 'https' : 'http';
-            $host = $\_SERVER\['HTTP\_HOST'\];
-            $resetUrl = $protocol . '://' . $host . '/auth/reset\_password.php?token=' . $token;
-            // Get student full name for email greeting, fallback to generic "Student"
-            $recipientName = $student['full_name'] ?? 'Student';
+            $host = $_SERVER['HTTP_HOST'];
+            $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?token=' . $token;
             
             // HTML email template content containing reset link
             $html = "
