@@ -10,6 +10,7 @@ function sendResetEmail(string $recipientEmail, string $recipientName, string $r
 {
     $mail = new PHPMailer(true);
     try {
+        // Server basic configuration
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
@@ -21,9 +22,22 @@ function sendResetEmail(string $recipientEmail, string $recipientName, string $r
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ],
+            'socket' => [
+                'bindto' => '0:0'
+            ]
+        ];
+
+        // Email sender & recipient
         $mail->setFrom($senderEmail, 'School Portal System');
         $mail->addAddress($recipientEmail, $recipientName);
 
+        // Email content
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset Request - Student Portal';
         $mail->Body = "
