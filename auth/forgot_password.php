@@ -51,8 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updateStmt->execute();
             $updateStmt->close();
 
-            // Build full absolute URL for password reset page with encoded secure token
-            $resetUrl = "http://localhost:8080/auth/reset_password.php?token=" . urlencode($resetToken);
+            $protocol = (!empty($\_SERVER\['HTTPS'\]) && $\_SERVER\['HTTPS'\] !== 'off') ? 'https' : 'http';
+            $host = $\_SERVER\['HTTP\_HOST'\];
+            $resetUrl = $protocol . '://' . $host . '/auth/reset\_password.php?token=' . $token;
             // Get student full name for email greeting, fallback to generic "Student"
             $recipientName = $student['full_name'] ?? 'Student';
             
