@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Please enter your registered student email address.";
     } else {
         // Step 1: Look up student record matching the submitted email to get full name
-        $stmt = $conn->prepare("SELECT student_id, full_name FROM users WHERE email = ? LIMIT 1");
+        $stmt = $conn->prepare("SELECT users.student_id, student.full_name FROM users LEFT JOIN student ON users.student_id=student.student_id WHERE users.email = ? LIMIT 1");
         $stmt->bind_param("s", $email); // Bind email as string parameter
         $stmt->execute();
         $student = $stmt->get_result()->fetch_assoc(); // Fetch matching student data
