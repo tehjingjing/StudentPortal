@@ -1,11 +1,11 @@
 FROM php:8.2-cli
 
-# Install required PHP extensions for MySQL database connection
-RUN docker-php-ext-install mysqli pdo_mysql
+# Install required extensions: database + mail support
+RUN docker-php-ext-install mysqli pdo_mysql mbstring
+RUN docker-php-ext-enable openssl
 
-# Copy all project source code into container
+# Copy project files into container
 COPY . /app
 WORKDIR /app
 
-# Expose default port for Railway proxy
 EXPOSE 8080
