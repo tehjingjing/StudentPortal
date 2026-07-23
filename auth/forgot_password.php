@@ -51,7 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $updateStmt->execute();
             $updateStmt->close();
 
-            $protocol = (!empty($\_SERVER\['HTTPS'\]) && $\_SERVER\['HTTPS'\] !== 'off') ? 'https' : 'http';
+            $isHttps = 
+                 (!empty($\_SERVER\['HTTPS'\]) && $\_SERVER\['HTTPS'\] !== 'off')
+                 || 
+                 (isset($\_SERVER\['HTTP\_X\_FORWARDED\_PROTO'\]) && $\_SERVER\['HTTP\_X\_FORWARDED\_PROTO'\] === 'https');
+            $protocol = $isHttps ? 'https' : 'http';
             $host = $\_SERVER\['HTTP\_HOST'\];
             $resetUrl = $protocol . '://' . $host . '/auth/reset\_password.php?token=' . $token;
             // Get student full name for email greeting, fallback to generic "Student"
