@@ -62,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $recipientName = $student['full_name'] ?? 'Student';
 
-            // Call mailer function to deliver reset email
             $emailSent = sendResetEmail($email, $recipientName, $resetUrl);
             if ($emailSent) {
                 // Success message if mail delivery completes
