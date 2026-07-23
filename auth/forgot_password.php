@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $host = $_SERVER['HTTP_HOST'];
             $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?token=' . $token;
 
-            $recipientName = $student\['full\_name'\] ?? 'Student';
+            $recipientName = $student['full_name'] ?? 'Student';
             
             <h2>Password Reset Request</h2>
             <p>Hi {$recipientName},</p>
