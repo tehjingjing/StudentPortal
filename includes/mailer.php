@@ -11,21 +11,25 @@ function sendResetEmail(string $recipientEmail, string $recipientName, string $r
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+        
+        $mail->Host = gethostbyname('smtp.gmail.com'); 
+        
         $mail->SMTPAuth = true;
         
-        $senderEmail = "tehjingjing2006@gmail.com";
+        $senderEmail = getenv('SMTP_USER') ?: 'tehjingjing2006@gmail.com';
         $mail->Username = $senderEmail;
-        $mail->Password = "lzyc kgof mzzw uvra";
+        $mail->Password = getenv('SMTP_PASS') ?: 'fcaf yjoa dseq fyvd';
 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom($senderEmail, 'School Portal System');
-        $mail->addAddress($recipientEmail, $recipientName);
+        $mail->Timeout = 10;
 
-        $mail->isHTML(true);
-        $mail->Subject = 'Password Reset Request - Student Portal';
+        $mail->setFrom($senderEmail, 'School Portal System'); 
+        $mail->addAddress($recipientEmail, $recipientName); 
+
+        $mail->isHTML(true); 
+        $mail->Subject = 'Password Reset Request - Student Portal'; 
         $mail->Body = "
             <h2>Password Reset Request</h2>
             <p>Hi {$recipientName},</p>
@@ -33,15 +37,17 @@ function sendResetEmail(string $recipientEmail, string $recipientName, string $r
             <p>This link is valid for 1 hour only:</p>
             <p><a href='$resetLink'>$resetLink</a></p>
             <p>If you did not request this, ignore this email.</p>
-        ";
-        $mail->AltBody = "Copy this link to reset your password: $resetLink";
+        "; //[cite: 4]
+        $mail->AltBody = "Copy this link to reset your password: $resetLink"; 
 
-        $mail->send();
-        return true;
+        $mail->send(); 
+        return true; 
+        
     } catch (Exception $e) {
-        $errMsg = "PHPMailer Info: ".$mail->ErrorInfo." | PHP Exception: ".$e->getMessage();
-        error_log($errMsg);
-        $GLOBALS['mailDebug'] = $errMsg;
-        return false;
+        $errMsg = "PHPMailer Info: ".$mail->ErrorInfo." | PHP Exception: ".$e->getMessage(); 
+        error_log($errMsg); 
+        $GLOBALS['mailDebug'] = $errMsg; 
+        return false; 
     }
 }
+?>
