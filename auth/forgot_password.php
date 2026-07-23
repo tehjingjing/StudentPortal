@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $protocol = $isHttps ? 'https' : 'http';
             $host = $_SERVER['HTTP_HOST'];
-            $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?reset_token=' . $reset_token;
+            $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?token=' . $reset_token;
 
             // Fix: correct array access syntax
             $recipientName = $student['full_name'] ?? 'Student';
