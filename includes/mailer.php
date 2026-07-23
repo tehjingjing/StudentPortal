@@ -20,8 +20,8 @@ function sendResetEmail(string $recipientEmail, string $recipientName, string $r
         $mail->Username = $senderEmail;
         $mail->Password = getenv('SMTP_PASS') ?: 'fcaf yjoa dseq fyvd';
 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
+        $mail->Port = 465;
 
         $mail->Timeout = 10;
 
