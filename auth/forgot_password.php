@@ -61,14 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $resetUrl = $protocol . '://' . $host . '/auth/reset_password.php?token=' . $token;
 
             $recipientName = $student['full_name'] ?? 'Student';
-            
-            <h2>Password Reset Request</h2>
-            <p>Hi {$recipientName},</p>
-            <p>You requested a password reset for your student account.</p>
-            <p>This link is valid for 1 hour only:</p>
-            <p><a href='$resetUrl'>$resetUrl</a></p>
-            <p>If you did not request this, ignore this email.</p>
-            ";
 
             // Call mailer function to deliver reset email
             $emailSent = sendResetEmail($email, $recipientName, $resetUrl);
