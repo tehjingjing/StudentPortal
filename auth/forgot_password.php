@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Please enter your registered student email address.";
     } else {
         // Step 1: Look up student record matching the submitted email to get full name
-        $stmt = $conn->prepare("SELECT student_id, full_name FROM student WHERE email = ? LIMIT 1");
+        $stmt = $conn->prepare("SELECT student_id, full_name FROM users WHERE email = ? LIMIT 1");
         $stmt->bind_param("s", $email); // Bind email as string parameter
         $stmt->execute();
         $student = $stmt->get_result()->fetch_assoc(); // Fetch matching student data
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $expireTime = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
             // Fix: Save token into the same student table
-            $updateStmt = $conn->prepare("UPDATE student SET reset_token = ?, reset_expiry = ? WHERE email = ?");
+            $updateStmt = $conn->prepare("UPDATE users SET reset_token = ?, reset_expiry = ? WHERE email = ?");
             $updateStmt->bind_param("sss", $reset_token, $expireTime, $email);
             $updateStmt->execute();
             $updateStmt->close();
