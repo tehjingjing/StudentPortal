@@ -12,29 +12,29 @@ Student Portal is a PHP and MySQL web application designed for educational insti
 - Manage teacher records
 - Manage academic programmes
 - Manage courses
-- Review and approve/reject student leave applications
-- View dashboard statistics
+- Review, approve, or reject student leave applications
+- View administrator dashboard with statistics
 
 ### Student
 
 - View personal profile
 - Register for available courses
 - Drop registered courses
-- Submit leave applications with supporting documents
+- Submit leave applications with supporting document uploads
 - View leave application history and status
 
 ### Security
 
-- Password hashing using **bcrypt**
-- CSRF protection on all forms
+- Password hashing using bcrypt
+- CSRF protection
 - SQL injection prevention using prepared statements
 - Session-based authentication
 - Role-based access control
-- Server-side input validation and sanitization
+- Server-side validation and sanitization
 
 ---
 
-## Technologies Used
+# Technologies Used
 
 - PHP 8
 - MySQL
@@ -44,20 +44,22 @@ Student Portal is a PHP and MySQL web application designed for educational insti
 - Bootstrap 5
 - Docker
 - Railway
+- SendGrid (SMTP Mail)
 - Playwright (End-to-End Testing)
 
 ---
 
-## Requirements
+# Requirements
 
 Before deploying the application, ensure you have:
 
 - A Railway account
 - A GitHub account
 - Git (optional, for cloning the repository)
+- A SendGrid account (for email functionality)
 - A modern web browser
 
-No local PHP, MySQL, Apache, or Docker installation is required for deployment.
+No local PHP, MySQL, Apache, or Docker installation is required.
 
 ---
 
@@ -74,35 +76,34 @@ cd StudentPortal
 
 ## Option 2: Download the Repository
 
-1. Open the repository on GitHub.
-2. Click **Code**.
+1. Open the GitHub repository.
+2. Click the **Code** button.
 3. Select **Download ZIP**.
-4. Extract the downloaded ZIP file.
+4. Extract the ZIP archive.
 
 ---
 
 ## Deploy to Railway
 
-1. Log in to your Railway account.
+1. Log in to Railway.
 2. Click **New Project**.
 3. Select **Deploy from GitHub Repo**.
-4. Connect your GitHub account if prompted.
-5. Select the **StudentPortal** repository.
+4. Connect your GitHub account.
+5. Choose the **StudentPortal** repository.
 6. Railway will automatically detect the `Dockerfile`.
-7. Wait for Railway to build and deploy the application.
-8. Add the required environment variables under the **Variables** tab.
-9. Redeploy the project if necessary.
+7. Wait until the application finishes building.
+8. Configure the required environment variables.
+9. Redeploy the application if prompted.
 
 ---
 
-## Configure the Database
+# Configure the MySQL Database
 
-Create a MySQL database in Railway:
-
-1. Inside your Railway project, click **New**.
-2. Select **Database**.
-3. Choose **MySQL**.
-4. Railway will automatically generate the database credentials.
+1. Open your Railway project.
+2. Click **New**.
+3. Select **Database**.
+4. Choose **MySQL**.
+5. Railway will automatically create the database.
 
 Configure the following environment variables:
 
@@ -114,32 +115,52 @@ DB_USERNAME=<Database Username>
 DB_PASSWORD=<Database Password>
 ```
 
-If your application uses additional variables (such as `APP_ENV` or `APP_URL`), configure them in the Railway **Variables** tab.
+---
+
+# Configure SendGrid Email
+
+The application uses **SendGrid SMTP** to send password reset emails.
+
+Create a SendGrid account and generate an API Key.
+
+Add the following environment variables in Railway.
+
+```text
+SMTP_HOST=smtp.sendgrid.net
+SMTP_PORT=587
+SMTP_USERNAME=apikey
+SMTP_PASSWORD=<YOUR_SENDGRID_API_KEY>
+
+SMTP_FROM=noreply@example.com
+SMTP_FROM_NAME=Student Portal
+```
+
+> **Note:** When using SendGrid SMTP, the username must always be `apikey`, while the password is your SendGrid API key.
 
 ---
 
-## Access the Application
+# Access the Application
 
-Once deployment is complete, Railway will provide a public URL similar to:
+After deployment, Railway provides a public URL similar to
 
 ```
 https://studentportal-production.up.railway.app
 ```
 
-Open the URL in your browser to access the application.
+Open the URL in your web browser.
 
 ---
 
 # Test Login Credentials
 
-The database is seeded with the following accounts for coursework testing.
+The seeded database includes the following accounts for testing.
 
 | Role | Email | Password |
 |------|-------|----------|
 | Administrator | admin@portal.com | Portal123! |
 | Student | alice@school.edu | Portal123! |
 
-> **Note:** These credentials are intended for testing only. Replace them before deploying the application in a production environment.
+> Replace these credentials before deploying the application in a production environment.
 
 ---
 
@@ -232,30 +253,15 @@ StudentPortal/
 
 ---
 
-# Security Features
+# Running Playwright Tests
 
-The application implements several security best practices:
-
-- Passwords are securely hashed using bcrypt.
-- SQL queries use prepared statements to prevent SQL injection.
-- CSRF tokens protect all forms.
-- User sessions are securely managed.
-- Role-based authorization restricts access to administrator functions.
-- User input is validated and sanitized on the server.
-
----
-
-# Running Tests
-
-This project includes Playwright end-to-end tests.
-
-Install dependencies:
+Install the dependencies.
 
 ```bash
 npm install
 ```
 
-Run the tests:
+Run the automated tests.
 
 ```bash
 npx playwright test
@@ -263,11 +269,26 @@ npx playwright test
 
 ---
 
+# Security Features
+
+The application implements the following security measures:
+
+- Passwords are securely hashed using bcrypt.
+- Prepared SQL statements prevent SQL injection.
+- CSRF tokens protect all forms.
+- Session-based authentication.
+- Role-based authorization.
+- Server-side input validation and sanitization.
+- Secure password reset via SendGrid SMTP.
+
+---
+
 # Notes
 
-- Leave application documents are uploaded to `uploads/leavedoc/`.
-- On Railway, uploaded files are stored on the application's filesystem and may not persist after a redeployment. For production use, consider storing uploaded files in a cloud storage service such as Amazon S3 or Cloudinary.
-- The project is configured for deployment using **Railway** with the included `Dockerfile` and `railway.json`.
+- Uploaded leave documents are stored in `uploads/leavedoc/`.
+- Railway stores uploaded files on the container filesystem. Files may not persist after a redeployment. For production deployments, use cloud storage such as Amazon S3, Azure Blob Storage, or Cloudinary.
+- Email functionality requires a valid SendGrid API key.
+- The application is configured for deployment using the included `Dockerfile` and `railway.json`.
 
 ---
 
