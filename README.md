@@ -1,178 +1,276 @@
 # Student Portal
-Student Portal is a comprehensive PHP and MySQL web application designed for educational institutions to manage student records, teachers, academic programmes, courses, enrolment, and leave applications. The system features separate administrator and student dashboards with role-based access control, ensuring secure and efficient management of academic data.
 
-## Key Features
+Student Portal is a PHP and MySQL web application designed for educational institutions to manage students, teachers, academic programmes, courses, enrolment, and leave applications. The system provides separate administrator and student dashboards with role-based access control, ensuring secure and efficient management of academic data.
 
-### Administrator Capabilities
-- **Student Management**: Create, edit, view, and delete student profiles with detailed academic and personal information
-- **Teacher Management**: Manage teacher records including faculty assignments and employment status
-- **Program Management**: Create and manage academic programmes with faculty associations and credit requirements
-- **Course Management**: Add, edit, and remove courses with program associations, credit hours, and duration
-- **Leave Approval**: Review, approve, or reject student leave applications with supporting document verification
+---
 
-### Student Capabilities
-- **Profile Viewing**: Access personal profile information including academic details and guardian contacts
-- **Course Registration**: Register for available courses within their faculty and academic term
-- **Course Dropping**: Drop enrolled courses with confirmation
-- **Leave Applications**: Submit leave requests with optional supporting document uploads (PDF, JPG, PNG - max 5MB)
-- **Application History**: View status of submitted leave applications (pending, approved, rejected)
+## Features
 
-### Security Features
-- Secure password hashing using bcrypt
-- CSRF (Cross-Site Request Forgery) protection on all forms
-- SQL injection prevention via prepared statements
-- Session-based authentication with role verification
+### Administrator
+
+- Manage student records (create, update, view, delete)
+- Manage teacher records
+- Manage academic programmes
+- Manage courses
+- Review and approve/reject student leave applications
+- View dashboard statistics
+
+### Student
+
+- View personal profile
+- Register for available courses
+- Drop registered courses
+- Submit leave applications with supporting documents
+- View leave application history and status
+
+### Security
+
+- Password hashing using **bcrypt**
+- CSRF protection on all forms
+- SQL injection prevention using prepared statements
+- Session-based authentication
+- Role-based access control
 - Server-side input validation and sanitization
+
+---
+
+## Technologies Used
+
+- PHP 8
+- MySQL
+- HTML5
+- CSS3
+- JavaScript
+- Bootstrap 5
+- Docker
+- Railway
+- Playwright (End-to-End Testing)
+
+---
 
 ## Requirements
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- A web browser
+Before deploying the application, ensure you have:
 
-No local PHP or MySQL installation is required.
+- A Railway account
+- A GitHub account
+- Git (optional, for cloning the repository)
+- A modern web browser
 
-## Setup and run
+No local PHP, MySQL, Apache, or Docker installation is required for deployment.
 
-1. Clone the GitHub repository and open the project folder// Download a zip file
+---
 
-   ```bash
-   git clone <your-repository-url>
-   cd StudentPortal
-   ```
-   
-   ```bash
-   1. Go to the main page of the repository on GitHub.
-   2. Click the green Code button located at the top right of the file list.
-   3. Select Download ZIP from the dropdown menu.
-   4. Locate the downloaded file on your computer and extract (unzip) it to access the code.
-   ```
+# Deployment
 
-2. Start the application containers.
-
-   ```bash
-   docker compose up --build
-   ```
-
-3. Wait until Docker reports that the web and database services are running, then open:
-
-   | Service | Address |
-   | --- | --- |
-   | Student Portal | http://localhost:8080 |
-   | phpMyAdmin | http://localhost:8081 |
-
-4. Stop the application when finished.
-
-   ```bash
-   docker compose down
-   ```
-
-### Resetting the sample database
-
-The SQL seed script only runs when the database volume is created for the first
-time. To remove all local data and recreate the sample data, run:
+## Option 1: Clone the Repository
 
 ```bash
-docker compose down -v
-docker compose up --build
+git clone <your-github-repository-url>
+cd StudentPortal
 ```
 
-> Warning: this permanently deletes the local database volume.
+---
 
-## Test login credentials
+## Option 2: Download the Repository
 
-After starting with a fresh database, use either account below. The password is
-intentionally included for coursework testing only; replace seeded credentials
-in any real deployment.
+1. Open the repository on GitHub.
+2. Click **Code**.
+3. Select **Download ZIP**.
+4. Extract the downloaded ZIP file.
+
+---
+
+## Deploy to Railway
+
+1. Log in to your Railway account.
+2. Click **New Project**.
+3. Select **Deploy from GitHub Repo**.
+4. Connect your GitHub account if prompted.
+5. Select the **StudentPortal** repository.
+6. Railway will automatically detect the `Dockerfile`.
+7. Wait for Railway to build and deploy the application.
+8. Add the required environment variables under the **Variables** tab.
+9. Redeploy the project if necessary.
+
+---
+
+## Configure the Database
+
+Create a MySQL database in Railway:
+
+1. Inside your Railway project, click **New**.
+2. Select **Database**.
+3. Choose **MySQL**.
+4. Railway will automatically generate the database credentials.
+
+Configure the following environment variables:
+
+```text
+DB_HOST=<Railway MySQL Host>
+DB_PORT=<Railway MySQL Port>
+DB_DATABASE=<Database Name>
+DB_USERNAME=<Database Username>
+DB_PASSWORD=<Database Password>
+```
+
+If your application uses additional variables (such as `APP_ENV` or `APP_URL`), configure them in the Railway **Variables** tab.
+
+---
+
+## Access the Application
+
+Once deployment is complete, Railway will provide a public URL similar to:
+
+```
+https://studentportal-production.up.railway.app
+```
+
+Open the URL in your browser to access the application.
+
+---
+
+# Test Login Credentials
+
+The database is seeded with the following accounts for coursework testing.
 
 | Role | Email | Password |
-| --- | --- | --- |
-| Administrator | `admin@portal.com` | `Portal123!` |
-| Student | `alice@school.edu` | `Portal123!` |
+|------|-------|----------|
+| Administrator | admin@portal.com | Portal123! |
+| Student | alice@school.edu | Portal123! |
 
-## phpMyAdmin credentials
+> **Note:** These credentials are intended for testing only. Replace them before deploying the application in a production environment.
 
-Use the following values at http://localhost:8081:
+---
 
-| Field | Value |
-| --- | --- |
-| Server | `db` |
-| Username | `appuser` |
-| Password | `apppass` |
-
-## Project structure
+# Project Structure
 
 ```text
 StudentPortal/
 ├── auth/
-│   ├── login.php              # User login with CSRF protection and lockout
-│   ├── register.php           # Student self-registration
-│   ├── logout.php             # Session cleanup and logout
-│   ├── forgot_password.php    # Password reset request
-│   └── reset_password.php     # Password reset with token validation
+│   ├── login.php
+│   ├── register.php
+│   ├── logout.php
+│   ├── forgot_password.php
+│   └── reset_password.php
+│
 ├── config/
-│   └── db.php                 # Database connection configuration
+│   └── db.php
+│
 ├── courses/
-│   ├── index.php              # Course listing with search
-│   ├── create.php             # Add new course form
-│   ├── edit.php               # Edit existing course
-│   └── delete.php             # Delete course handler
+│   ├── index.php
+│   ├── create.php
+│   ├── edit.php
+│   └── delete.php
+│
 ├── dashboard/
-│   ├── admin_dashboard.php    # Administrator dashboard with statistics
-│   └── student_dashboard.php  # Student dashboard with profile
+│   ├── admin_dashboard.php
+│   └── student_dashboard.php
+│
 ├── db/
-│   └── init.sql               # Database schema and sample data
+│   └── init.sql
+│
 ├── enrolment/
-│   ├── my_course.php          # Student course registration page
-│   ├── register_course.php    # Course registration handler
-│   └── drop_course.php        # Course drop handler
+│   ├── my_course.php
+│   ├── register_course.php
+│   └── drop_course.php
+│
 ├── includes/
-│   ├── csrf_helper.php        # CSRF token generation and validation
-│   ├── require_login.php      # Authentication guard
-│   ├── require_admin.php      # Admin role guard
-│   ├── student_sidebar.php    # Student navigation sidebar
-│   └── admin_sidebar.php      # Admin navigation sidebar
+│   ├── csrf_helper.php
+│   ├── require_login.php
+│   ├── require_admin.php
+│   ├── student_sidebar.php
+│   └── admin_sidebar.php
+│
 ├── leaves/
-│   ├── index.php              # Admin leave management page
-│   ├── apply.php              # Student leave application form
-│   ├── submit_leave.php       # Leave submission handler
-│   └── process_leave.php     # Leave approval/rejection handler
+│   ├── index.php
+│   ├── apply.php
+│   ├── submit_leave.php
+│   └── process_leave.php
+│
 ├── programs/
-│   ├── index.php              # Program listing with search
-│   ├── create.php             # Add new program form
-│   ├── edit.php               # Edit existing program
-│   └── delete.php             # Delete program handler
+│   ├── index.php
+│   ├── create.php
+│   ├── edit.php
+│   └── delete.php
+│
 ├── public/
 │   ├── css/
-│   │   └── styles.css         # Main stylesheet
+│   │   └── styles.css
 │   ├── js/
-│   │   └── sidebar.js         # Sidebar toggle functionality
+│   │   └── sidebar.js
 │   └── logo/
-│       └── Spacecollege.png   # Application logo
+│       └── Spacecollege.png
+│
 ├── students/
-│   ├── index.php              # Student listing with search
-│   ├── create.php             # Add new student form
-│   ├── edit.php               # Edit existing student
-│   ├── delete.php             # Delete student handler
-│   └── profile.php            # Student profile view
+│   ├── index.php
+│   ├── create.php
+│   ├── edit.php
+│   ├── delete.php
+│   └── profile.php
+│
 ├── teachers/
-│   ├── index.php              # Teacher listing with search
-│   ├── create.php             # Add new teacher form
-│   ├── edit.php               # Edit existing teacher
-│   └── delete.php             # Delete teacher handler
+│   ├── index.php
+│   ├── create.php
+│   ├── edit.php
+│   └── delete.php
+│
 ├── uploads/
-│   └── leavedoc/              # Leave evidence file uploads
+│   └── leavedoc/
+│
 ├── tests/
-│   └── student_portal.spec.js # Playwright end-to-end tests
-├── .gitignore                 # Git ignore rules
-├── docker-compose.yml         # Docker Compose configuration
-├── index.php                  # Application entry point
-├── package.json               # Node.js dependencies (Playwright)
-├── playwright.config.js       # Playwright test configuration
-└── README.md                  # Project documentation
+│   └── student_portal.spec.js
+│
+├── .gitignore
+├── Dockerfile
+├── railway.json
+├── package.json
+├── playwright.config.js
+├── index.php
+└── README.md
 ```
 
-## Notes
+---
 
-- The database host in `config/db.php` is `db`, which is the Docker Compose
-  service name. It will not work when opening PHP files directly without Docker.
-- Uploaded leave evidence is stored locally in `uploads/leavedoc/`.
+# Security Features
+
+The application implements several security best practices:
+
+- Passwords are securely hashed using bcrypt.
+- SQL queries use prepared statements to prevent SQL injection.
+- CSRF tokens protect all forms.
+- User sessions are securely managed.
+- Role-based authorization restricts access to administrator functions.
+- User input is validated and sanitized on the server.
+
+---
+
+# Running Tests
+
+This project includes Playwright end-to-end tests.
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the tests:
+
+```bash
+npx playwright test
+```
+
+---
+
+# Notes
+
+- Leave application documents are uploaded to `uploads/leavedoc/`.
+- On Railway, uploaded files are stored on the application's filesystem and may not persist after a redeployment. For production use, consider storing uploaded files in a cloud storage service such as Amazon S3 or Cloudinary.
+- The project is configured for deployment using **Railway** with the included `Dockerfile` and `railway.json`.
+
+---
+
+# License
+
+This project was developed for educational and coursework purposes.
